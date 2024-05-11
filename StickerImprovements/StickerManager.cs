@@ -45,7 +45,6 @@ internal class StickerManager
 				name = stickerName,
 				sprite = sprite
 			});
-			AirportCEOStickerFix.LogInfo("Loaded a workshop sticker mod!");
         }
 
 		AirportCEOStickerFix.LogInfo($"Loaded a total of {DataPlaceholderItems.Instance.stickers.Count} sticker mods, in this load cycle.");
