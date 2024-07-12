@@ -32,7 +32,7 @@ static class StickerPatches
     }
 
     [HarmonyPatch(typeof(PlaceableLogotype), "SetCorrectLogoSize")]
-    [HarmonyPrefix]
+    [HarmonyPostfix]
     public static void ScalePatch(PlaceableLogotype __instance)
     {
         if (!AirportCEOStickerFixConfig.UseScaleModule.Value)
@@ -43,8 +43,8 @@ static class StickerPatches
         float LogoScaleX = __instance.variationSpriteRenderer.transform.localScale.x;
         float LogoScaleY = __instance.variationSpriteRenderer.transform.localScale.y;
 
-        float ELogoScaleX = (float)(LogoScaleX / 0.4 * 0.39081);
-        float ELogoScaleY = (float)(LogoScaleY / 0.4 * 0.39081);
+        float ELogoScaleX = 0.391f;
+        float ELogoScaleY = 0.391f;
 
         __instance.variationSpriteRenderer.transform.localScale = new Vector3(ELogoScaleX, ELogoScaleY, 1f);
 

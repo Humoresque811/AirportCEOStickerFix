@@ -33,7 +33,7 @@ public class AirportCEOStickerFix : BaseUnityPlugin
 
     private void Start()
     {
-        AirportCEOModLoader.WatermarkUtils.WatermarkUtils.Register(new AirportCEOModLoader.WatermarkUtils.WatermarkInfo("SF", "1.4", true));
+        AirportCEOModLoader.WatermarkUtils.WatermarkUtils.Register(new AirportCEOModLoader.WatermarkUtils.WatermarkInfo("SF", "1.4.1", true));
         WorkshopModLoaderManager.SetUpModLoaderInteractions();
 
         if (AirportCEOStickerFixConfig.UseInfiniteSizeModule.Value)
