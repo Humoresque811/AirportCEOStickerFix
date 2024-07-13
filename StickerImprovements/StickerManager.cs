@@ -78,4 +78,17 @@ internal class StickerManager
 		}
 		return result;
 	}
+
+	internal static void UpdateUnlimitedSizeValue(object _, System.EventArgs __)
+	{
+		
+        if (AirportCEOStickerFixConfig.UseInfiniteSizeModule.Value)
+        {
+            GameSettingManager.GameSettings.unlimitedLogoSize = true;
+        }
+        else
+        {
+            GameSettingManager.GameSettings.unlimitedLogoSize = false;
+        }
+	}
 }

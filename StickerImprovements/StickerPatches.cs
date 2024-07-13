@@ -43,8 +43,8 @@ static class StickerPatches
         float LogoScaleX = __instance.variationSpriteRenderer.transform.localScale.x;
         float LogoScaleY = __instance.variationSpriteRenderer.transform.localScale.y;
 
-        float ELogoScaleX = 0.391f;
-        float ELogoScaleY = 0.391f;
+        float ELogoScaleX = (LogoScaleX / 0.4f) * 0.391f;
+        float ELogoScaleY = (LogoScaleY / 0.4f) * 0.391f;
 
         __instance.variationSpriteRenderer.transform.localScale = new Vector3(ELogoScaleX, ELogoScaleY, 1f);
 

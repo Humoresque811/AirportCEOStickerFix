@@ -36,14 +36,7 @@ public class AirportCEOStickerFix : BaseUnityPlugin
         AirportCEOModLoader.WatermarkUtils.WatermarkUtils.Register(new AirportCEOModLoader.WatermarkUtils.WatermarkInfo("SF", "1.4.1", true));
         WorkshopModLoaderManager.SetUpModLoaderInteractions();
 
-        if (AirportCEOStickerFixConfig.UseInfiniteSizeModule.Value)
-        {
-            GameSettingManager.GameSettings.unlimitedLogoSize = true;
-        }
-        else
-        {
-            GameSettingManager.GameSettings.unlimitedLogoSize = false;
-        }
+        AirportCEOStickerFixConfig.UseInfiniteSizeModule.SettingChanged += StickerManager.UpdateUnlimitedSizeValue;
         Logger.LogInfo("Finished Start");
     }
 
