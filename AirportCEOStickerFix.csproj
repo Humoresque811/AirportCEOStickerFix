@@ -4,9 +4,10 @@
     <TargetFramework>net46</TargetFramework>
     <AssemblyName>AirportCEOStickerFix</AssemblyName>
     <Description>Mod improving stickers in ACEO</Description>
-    <Version>1.4.1</Version>
+    <Version>1.4.3</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
+    <Copyright>© Humoresque 2025</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

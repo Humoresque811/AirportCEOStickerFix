@@ -5,13 +5,15 @@ using HarmonyLib;
 
 namespace AirportCEOStickerFix;
 
-[BepInPlugin("org.airportCEOStickerFix.humoresque", "AirportCEO Sticker Fix", PluginInfo.PLUGIN_VERSION)]
+[BepInPlugin("org.airportCEOStickerFix.humoresque", MODNAME, PluginInfo.PLUGIN_VERSION)]
 public class AirportCEOStickerFix : BaseUnityPlugin
 {
     public static AirportCEOStickerFix Instance { get; private set; }
     internal static Harmony Harmony { get; private set; }
     internal static ManualLogSource SFLogger { get; private set; }
     internal static ConfigFile ConfigReference {  get; private set; }
+
+    internal const string MODNAME = "AirportCEO Sticker Fix";
 
     private void Awake()
     {
@@ -33,10 +35,14 @@ public class AirportCEOStickerFix : BaseUnityPlugin
 
     private void Start()
     {
-        AirportCEOModLoader.WatermarkUtils.WatermarkUtils.Register(new AirportCEOModLoader.WatermarkUtils.WatermarkInfo("SF", "1.4.1", true));
-        WorkshopModLoaderManager.SetUpModLoaderInteractions();
+        Logger.LogInfo("Started Start");
+
+        AirportCEOModLoader.WatermarkUtils.WatermarkUtils.Register(new AirportCEOModLoader.WatermarkUtils.WatermarkInfo("SF", "1.4.3", true));
+        AirportCEOModLoader.WorkshopUtils.WorkshopUtils.Register("Stickers", StickerManager.ProcessWorkshopMod);
+        AirportCEOModLoader.SaveLoadUtils.CoroutineEventDispatcher.RegisterToLaunchGamePhase(StickerManager.AddStickersInGame, AirportCEOModLoader.SaveLoadUtils.CoroutineEventDispatcher.CoroutineAttachmentType.After);
 
         AirportCEOStickerFixConfig.UseInfiniteSizeModule.SettingChanged += StickerManager.UpdateUnlimitedSizeValue;
+
         Logger.LogInfo("Finished Start");
     }
 

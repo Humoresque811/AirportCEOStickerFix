@@ -53,11 +53,4 @@ static class StickerPatches
             AirportCEOStickerFix.LogInfo("Sticker size ajusted. The postion of the sticker was " + __instance.transform.position);
         }
     }
-
-    [HarmonyPatch(typeof(DataPlaceholderItems), nameof(DataPlaceholderItems.LoadStickers))]
-    [HarmonyPostfix]
-    public static void LoadStickerPatch()
-    {
-        StickerManager.ProccessStickers();
-    }
 }

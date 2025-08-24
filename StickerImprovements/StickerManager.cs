@@ -1,54 +1,87 @@
 ﻿using AirportCEOModLoader.Core;
+using AirportCEOModLoader.SaveLoadUtils;
+using AirportCEOModLoader.WorkshopUtils;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.IO;
 using UnityEngine;
+using System.Collections.Concurrent;
 
 namespace AirportCEOStickerFix;
 
 internal class StickerManager
 {
-    public static int StickerLayer = -50;
-	public static List<string> filePaths = new List<string>();
+    internal static int StickerLayer = -50;
+	internal static List<Sticker> cachedStickers = new();
 
-	public static void AddStickers(string[] files)
-	{
-		filePaths.AddRange(files);
-	}
-
-    public static void ProccessStickers(SaveLoadGameDataController _) => ProccessStickers();
-    public static void ProccessStickers()
+    internal static IEnumerator ProcessWorkshopMod(string extendedPath)
     {
+        if (!AirportCEOStickerFixConfig.LoadFromWorkshop.Value)
+        {
+            yield break;
+        }
+
+        CoroutineEventDispatcher.GetTextUpdater()($"{AirportCEOStickerFix.MODNAME}: Reading Textures", 0);
+        yield return null;
+
+		List<string> filePaths = new List<string>();
+        string[] files = Directory.GetFiles(extendedPath, "*.png");
+        if (files.Length <= 0)
+        {
+            yield break;
+        }
+
+        filePaths.AddRange(files);
+
+		int fileNumber = filePaths.Count;
+		float percentagePerFile = 100f / (float)fileNumber;
+		float currentCounter = 0;
+
         foreach (string file in filePaths)
         {
+			CoroutineEventDispatcher.GetTextUpdater()($"{AirportCEOStickerFix.MODNAME}: Reading Textures", currentCounter.Clamp(0f, 100f).RoundToIntLikeANormalPerson());
+			yield return null;
+			currentCounter += percentagePerFile;
+
 			Sprite sprite = LoadImagePerformant(file);
 			string stickerName = new FileInfo(file)?.Name?.Replace(".png", "");
 			bool addSticker = true;
-
-			foreach (Sticker sticker in DataPlaceholderItems.Instance.stickers)
-			{
-				if (sticker.name == null || !sticker.name.Equals(stickerName))
-				{
-					continue;
-				}
-
-				addSticker = false;
-			}
 
 			if (!addSticker)
 			{
 				continue;
 			} 
 
-			DataPlaceholderItems.Instance.stickers.Add(new Sticker
+			cachedStickers.Add(new Sticker
 			{
 				name = stickerName,
 				sprite = sprite
 			});
         }
-
-		AirportCEOStickerFix.LogInfo($"Loaded a total of {DataPlaceholderItems.Instance.stickers.Count} sticker mods, in this load cycle.");
+		yield return null;
     }
+
+	internal static IEnumerator AddStickersInGame()
+	{
+		foreach (Sticker newSticker in cachedStickers)
+		{
+			bool addSticker = true;
+			foreach (Sticker existingSticker in DataPlaceholderItems.Instance.stickers)
+			{
+				if (existingSticker.name != null && existingSticker.name.Equals(newSticker.name))
+				{
+					addSticker = false;
+				}
+			}
+
+			if (addSticker)
+			{
+				DataPlaceholderItems.Instance.stickers.Add(newSticker);
+			}
+		}
+		yield break;
+	}
 
 	// This is written to replace the games LoadImage function to add the apply set.
     private static Sprite LoadImagePerformant(string filePath)
@@ -91,4 +124,5 @@ internal class StickerManager
             GameSettingManager.GameSettings.unlimitedLogoSize = false;
         }
 	}
+
 }
